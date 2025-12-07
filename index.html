@@ -229,17 +229,138 @@
             margin: 0 auto;
         }
 
-        /* Risk Section */
+        /* Risk Section - Full Screen Scroll */
         .risk-section {
-            padding: 6rem 5%;
-            background: linear-gradient(180deg, rgba(26, 29, 41, 0.3) 0%, transparent 100%);
+            padding: 0;
+            background: transparent;
         }
 
         .risk-container {
-            max-width: 1200px;
+            max-width: 100%;
+            margin: 0;
+        }
+
+        .risk-intro-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5%;
+            text-align: center;
+        }
+
+        .risk-intro-screen h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .risk-intro-screen p {
+            font-size: 1.5rem;
+            color: var(--text-gray);
+            max-width: 800px;
+        }
+
+        .risk-scroll-container {
+            position: relative;
+        }
+
+        .risk-item {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5%;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .risk-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .risk-item-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .risk-item-icon {
+            font-size: 8rem;
+            margin-bottom: 2rem;
+            animation: float-icon 3s ease-in-out infinite;
+        }
+
+        @keyframes float-icon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .risk-item-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: #ff6b6b;
+        }
+
+        .risk-item-content p {
+            font-size: 1.4rem;
+            color: var(--text-gray);
+            line-height: 2;
+            max-width: 700px;
             margin: 0 auto;
         }
 
+        .risk-number {
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 6rem;
+            font-weight: 900;
+            color: rgba(164, 255, 61, 0.1);
+        }
+
+        .solution-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5%;
+            background: linear-gradient(135deg, rgba(164, 255, 61, 0.05) 0%, rgba(143, 222, 53, 0.02) 100%);
+        }
+
+        .solution-box {
+            background: linear-gradient(135deg, rgba(164, 255, 61, 0.1) 0%, rgba(143, 222, 53, 0.05) 100%);
+            border: 2px solid var(--accent-green);
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(164, 255, 61, 0.15);
+            max-width: 900px;
+        }
+
+        .solution-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--accent-green);
+        }
+
+        .solution-box p {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            line-height: 2;
+        }
+
+        /* 기존 risk-grid 스타일 제거 */
         .risk-intro {
             text-align: center;
             font-size: 1.3rem;
@@ -249,62 +370,11 @@
         }
 
         .risk-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
+            display: none;
         }
 
         .risk-card {
-            background: linear-gradient(135deg, rgba(26, 29, 41, 0.6) 0%, rgba(15, 17, 23, 0.8) 100%);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 61, 61, 0.2);
-            transition: all 0.3s;
-        }
-
-        .risk-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 61, 61, 0.4);
-            box-shadow: 0 10px 30px rgba(255, 61, 61, 0.15);
-        }
-
-        .risk-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .risk-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            color: #ff6b6b;
-        }
-
-        .risk-card p {
-            color: var(--text-gray);
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-
-        .solution-box {
-            background: linear-gradient(135deg, rgba(164, 255, 61, 0.1) 0%, rgba(143, 222, 53, 0.05) 100%);
-            border: 2px solid var(--accent-green);
-            border-radius: 20px;
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(164, 255, 61, 0.15);
-        }
-
-        .solution-box h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--accent-green);
-        }
-
-        .solution-box p {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            line-height: 1.8;
+            display: none;
         }
 
         .stat-card {
@@ -423,11 +493,19 @@
             padding: 6rem 5%;
         }
 
+        .features-intro {
+            text-align: center;
+            font-size: 1.4rem;
+            color: var(--text-gray);
+            margin-top: -2rem;
+            margin-bottom: 4rem;
+        }
+
         .features-grid {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 2rem;
         }
 
@@ -437,28 +515,44 @@
             border-radius: 20px;
             border: 1px solid rgba(164, 255, 61, 0.15);
             transition: all 0.4s;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .feature-card:hover {
             border-color: var(--accent-green);
-            transform: translateY(-5px);
+            transform: translateX(10px);
             box-shadow: 0 20px 50px rgba(164, 255, 61, 0.2);
         }
 
         .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
+            font-size: 4rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .feature-content {
+            flex: 1;
         }
 
         .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
             color: var(--accent-green);
         }
 
         .feature-card p {
             color: var(--text-gray);
             line-height: 1.8;
+            margin: 0;
         }
 
         /* FAQ Section */
@@ -593,6 +687,22 @@
             .cta-buttons { flex-direction: column; }
             .step { flex-direction: column; text-align: center; }
             .nav-links { display: none; }
+            
+            .risk-intro-screen h2 { font-size: 2rem; }
+            .risk-intro-screen p { font-size: 1.1rem; }
+            .risk-item-icon { font-size: 5rem; }
+            .risk-item-content h3 { font-size: 2rem; }
+            .risk-item-content p { font-size: 1.1rem; }
+            .risk-number { font-size: 3rem; top: 2%; right: 5%; }
+            .solution-box { padding: 2rem; }
+            .solution-box h3 { font-size: 1.8rem; }
+            .solution-box p { font-size: 1rem; }
+            
+            .feature-card { 
+                flex-direction: column; 
+                text-align: center;
+            }
+            .feature-icon { margin-bottom: 1rem; }
         }
     </style>
 </head>
@@ -635,48 +745,68 @@
     </section>
 
     <section class="risk-section">
-        <div class="risk-container">
-            <h2 class="section-title">왜 손실 보상이 필요한가?</h2>
-            <p class="risk-intro">선물거래는 높은 수익 가능성만큼이나 큰 리스크를 동반합니다</p>
-            
-            <div class="risk-grid">
-                <div class="risk-card">
-                    <div class="risk-icon">⚠️</div>
+        <div class="risk-intro-screen">
+            <h2>왜 손실 보상이 필요한가?</h2>
+            <p>선물거래는 높은 수익 가능성만큼이나 큰 리스크를 동반합니다</p>
+        </div>
+
+        <div class="risk-scroll-container">
+            <div class="risk-item">
+                <div class="risk-number">01</div>
+                <div class="risk-item-content">
+                    <div class="risk-item-icon">⚠️</div>
                     <h3>레버리지 리스크</h3>
                     <p>5배~100배 레버리지로 인해 작은 가격 변동에도 큰 손실이 발생할 수 있습니다. 시장이 예상과 반대로 움직이면 투자금의 전액을 잃을 수 있습니다.</p>
                 </div>
-                
-                <div class="risk-card">
-                    <div class="risk-icon">📉</div>
+            </div>
+
+            <div class="risk-item">
+                <div class="risk-number">02</div>
+                <div class="risk-item-content">
+                    <div class="risk-item-icon">📉</div>
                     <h3>청산 위험</h3>
                     <p>증거금 유지율이 일정 수준 이하로 떨어지면 강제 청산됩니다. 단 몇 분 만에 모든 포지션이 청산되어 회복 불가능한 손실이 발생합니다.</p>
                 </div>
-                
-                <div class="risk-card">
-                    <div class="risk-icon">💨</div>
+            </div>
+
+            <div class="risk-item">
+                <div class="risk-number">03</div>
+                <div class="risk-item-content">
+                    <div class="risk-item-icon">💨</div>
                     <h3>극심한 변동성</h3>
                     <p>암호화폐 시장은 24시간 거래되며 급격한 가격 변동이 일상적입니다. 뉴스, 규제, 대량 거래로 인해 예측 불가능한 손실이 발생합니다.</p>
                 </div>
-                
-                <div class="risk-card">
-                    <div class="risk-icon">😰</div>
+            </div>
+
+            <div class="risk-item">
+                <div class="risk-number">04</div>
+                <div class="risk-item-content">
+                    <div class="risk-item-icon">😰</div>
                     <h3>심리적 압박</h3>
                     <p>연속된 손실은 감정적 거래를 유발하고, 잘못된 판단으로 이어집니다. 손실 회복을 위한 과도한 레버리지는 더 큰 손실을 초래합니다.</p>
                 </div>
+            </div>
 
-                <div class="risk-card">
-                    <div class="risk-icon">💸</div>
+            <div class="risk-item">
+                <div class="risk-number">05</div>
+                <div class="risk-item-content">
+                    <div class="risk-item-icon">💸</div>
                     <h3>펀딩비 부담</h3>
                     <p>무기한 선물은 8시간마다 펀딩비가 발생합니다. 포지션을 장기간 유지하면 지속적인 비용이 누적되어 수익을 잠식합니다.</p>
                 </div>
+            </div>
 
-                <div class="risk-card">
-                    <div class="risk-icon">⚡</div>
+            <div class="risk-item">
+                <div class="risk-number">06</div>
+                <div class="risk-item-content">
+                    <div class="risk-item-icon">⚡</div>
                     <h3>슬리피지 손실</h3>
                     <p>급격한 시장 변동이나 유동성 부족 시 주문이 원하는 가격에 체결되지 않습니다. 특히 대량 청산 시 예상보다 불리한 가격에 손실이 확정됩니다.</p>
                 </div>
             </div>
+        </div>
 
+        <div class="solution-screen">
             <div class="solution-box">
                 <h3>✨ 웹씨 보험이 해결책입니다</h3>
                 <p>손실이 발생해도 보험 노드로 전환되어 장기적인 보상을 받을 수 있습니다.<br>
@@ -720,37 +850,50 @@
     </section>
 
     <section id="features" class="features">
-        <h2 class="section-title">핵심 특징</h2>
+        <h2 class="section-title">하지만, 웹씨 보험이 있다면?</h2>
+        <p class="features-intro">이 모든 리스크를 완화하고 오히려 기회로 만드는 시스템</p>
         <div class="features-grid">
             <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <div class="feature-content">
+                    <h3>손실이 자산이 됩니다</h3>
+                    <p>레버리지 리스크로 발생한 손실도 100 USDT마다 보험 노드로 전환됩니다. 손실이 쌓일수록 더 많은 노드를 보유하게 되어 장기적인 보상 자산이 됩니다.</p>
+                </div>
+            </div>
+            <div class="feature-card">
                 <div class="feature-icon">🛡️</div>
-                <h3>리스크 완화 시스템</h3>
-                <p>선물 거래의 손실을 보험풀을 통해 완화하여 투자 리스크를 효과적으로 관리합니다.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>자동 보험료 적립</h3>
-                <p>모든 거래에서 10%가 자동으로 적립되어 별도의 관리 없이 보험 시스템이 운영됩니다.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>노드 기반 보상</h3>
-                <p>손실 100 USDT마다 노드가 생성되며, 노드가 많을수록 더 많은 보상을 받을 수 있습니다.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💎</div>
-                <h3>100일 분할 지급</h3>
-                <p>보상이 100일에 걸쳐 점진적으로 지급되어 안정적인 수익 흐름을 만들어냅니다.</p>
+                <div class="feature-content">
+                    <h3>청산되어도 끝이 아닙니다</h3>
+                    <p>강제 청산으로 손실이 발생해도 보험풀을 통해 손실이 누적되고, 이는 다시 노드 생성과 보상으로 이어집니다. 회복 불가능한 손실은 없습니다.</p>
+                </div>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
-                <h3>투명한 시스템</h3>
-                <p>보험풀 상태와 노드 현황을 실시간으로 확인할 수 있어 투명하게 운영됩니다.</p>
+                <div class="feature-content">
+                    <h3>변동성이 기회가 됩니다</h3>
+                    <p>극심한 변동성으로 인한 손실도 자동으로 10% 보험료로 적립됩니다. 시장이 불안할수록 보험풀이 빠르게 쌓여 더 빠른 보상 지급이 가능합니다.</p>
+                </div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3>간편한 보상 수령</h3>
-                <p>보험풀이 기준치에 도달하면 간단한 클레임으로 보상을 수령할 수 있습니다.</p>
+                <div class="feature-icon">🧘</div>
+                <div class="feature-content">
+                    <h3>심리적 안정을 제공합니다</h3>
+                    <p>손실에 대한 보상이 있다는 확신이 감정적 거래를 막아줍니다. 100일 분할 지급으로 안정적인 수익 흐름을 만들어 여유로운 투자가 가능합니다.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-content">
+                    <h3>자동으로 작동합니다</h3>
+                    <p>펀딩비나 슬리피지로 인한 손실도 모두 자동 추적됩니다. 별도 신청 없이 모든 거래에서 10%가 적립되어 복잡한 관리가 필요 없습니다.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💎</div>
+                <div class="feature-content">
+                    <h3>장기 보상으로 안정화</h3>
+                    <p>단기 손실의 고통을 100일에 걸친 지속적인 보상으로 완화합니다. 급격한 손실도 시간이 지나면서 회복되는 구조입니다.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -807,14 +950,13 @@
     </section>
 
     <section class="cta-section">
-        <h2>지금 바로 시작하세요</h2>
-        <p>선물거래의 리스크를 줄이고 안정적인 보상을 받아보세요</p>
-        <a href="#" class="btn btn-primary">보험 활성화하기</a>
+        <h2>매일 진행하는<br>WEBSEA 세미나</h2>
+        <p>웹씨 거래소와 보험 시스템에 대해 더 자세히 알아보세요<br>온/오프라인으로 전문가가 직접 설명하는 세미나에 참여하실 수 있습니다</p>
+        <a href="https://open.kakao.com/o/pRrgjJ4h" target="_blank" class="btn btn-primary">참여하기</a>
     </section>
 
     <footer>
         <p>© 2025 Websea Insurance System. All rights reserved.</p>
-        <p>최종 업데이트: 2025년 12월 3일</p>
         <div class="footer-links">
             <a href="#">이용약관</a>
             <a href="#">개인정보처리방침</a>
@@ -868,8 +1010,41 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.feature-card, .stat-card').forEach(el => {
+        document.querySelectorAll('.stat-card').forEach(el => {
             observer.observe(el);
+        });
+
+        // Feature cards scroll animation
+        const featureObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px'
+        });
+
+        document.querySelectorAll('.feature-card').forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+            featureObserver.observe(card);
+        });
+
+        // Risk items scroll animation
+        const riskObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.3,
+            rootMargin: '0px'
+        });
+
+        document.querySelectorAll('.risk-item').forEach(item => {
+            riskObserver.observe(item);
         });
     </script>
 </body>
