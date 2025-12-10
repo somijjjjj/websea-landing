@@ -329,22 +329,22 @@ function displayResults(results) {
     const finalResult = results[results.length - 1];
     const initialCapital = results[0].startCapital;
 
-    // 요약 카드 업데이트
+    // 요약 카드 업데이트 (소수점 제거)
     document.getElementById('finalCapital').innerHTML =
-        formatNumber(finalResult.totalCapital) + '<span class="unit">USDT</span>';
+        formatNumber(finalResult.totalCapital, 0) + '<span class="unit">USDT</span>';
 
     const netProfit = finalResult.endCapital - initialCapital;
     const profitElement = document.getElementById('netProfit');
-    profitElement.innerHTML = formatNumber(netProfit) + '<span class="unit">USDT</span>';
+    profitElement.innerHTML = formatNumber(netProfit, 0) + '<span class="unit">USDT</span>';
     profitElement.className = 'value ' + (netProfit >= 0 ? 'positive' : 'negative');
 
     document.getElementById('totalAirdrop').innerHTML =
-        formatNumber(finalResult.cumulativeAirdrop) + '<span class="unit">USDT</span>';
+        formatNumber(finalResult.cumulativeAirdrop, 0) + '<span class="unit">USDT</span>';
 
     document.getElementById('activeNodes').innerHTML =
         finalResult.activeNodes + '<span class="unit">개</span>';
 
-    // 테이블 업데이트 (마지막 10일)
+    // 테이블 업데이트 (마지막 10일, 모든 컬럼)
     const tbody = document.getElementById('resultsBody');
     tbody.innerHTML = '';
 
@@ -354,15 +354,33 @@ function displayResults(results) {
         const row = document.createElement('tr');
 
         const netPnlClass = result.netPnl >= 0 ? 'positive' : 'negative';
+        const dailyPnlClass = result.dailyPnl >= 0 ? 'positive' : 'negative';
 
         row.innerHTML = `
             <td>${result.day}</td>
-            <td>${formatNumber(result.startCapital)}</td>
-            <td>${formatNumber(result.endCapital)}</td>
-            <td class="${result.dailyPnl >= 0 ? 'positive' : 'negative'}">${formatNumber(result.dailyPnl)}</td>
-            <td class="${netPnlClass}">${formatNumber(result.netPnl)}</td>
-            <td class="positive">${formatNumber(result.cumulativeAirdrop)}</td>
+            <td>${formatNumber(result.capitalPlusClaim, 0)}</td>
+            <td>${formatNumber(result.startCapital, 0)}</td>
+            <td>${formatNumber(result.cumulativeClaim, 0)}</td>
+            <td>${formatNumber(result.seed, 2)}</td>
+            <td>${result.winCount}</td>
+            <td>${result.lossCount}</td>
+            <td class="positive">${formatNumber(result.totalProfit, 2)}</td>
+            <td class="negative">${formatNumber(result.totalLoss, 2)}</td>
+            <td class="${dailyPnlClass}">${formatNumber(result.dailyPnl, 2)}</td>
+            <td>${formatNumber(result.dailyFee, 2)}</td>
+            <td>${formatNumber(result.selfReferral, 2)}</td>
+            <td class="${netPnlClass}">${formatNumber(result.netPnl, 2)}</td>
+            <td>${formatNumber(result.endCapital, 0)}</td>
+            <td>${formatNumber(result.insuranceNodeCumulative, 2)}</td>
+            <td>${result.newNodesToday}</td>
+            <td>${formatNumber(result.carryoverLoss, 2)}</td>
+            <td>${result.waitingNodes}</td>
             <td>${result.activeNodes}</td>
+            <td>${result.expiredNodes}</td>
+            <td>${result.newlyActivatedNodes}</td>
+            <td class="positive">${formatNumber(result.todayAirdropTotal, 2)}</td>
+            <td class="positive">${formatNumber(result.cumulativeAirdrop, 0)}</td>
+            <td>${formatNumber(result.totalCapital, 0)}</td>
         `;
 
         tbody.appendChild(row);
