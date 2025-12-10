@@ -570,11 +570,19 @@
                             <span class="input-unit">일</span>
                         </div>
                     </div>
+                </div>
+            </div>
 
+            <div class="divider"></div>
+
+            <!-- 시뮬레이션 기간 섹션 -->
+            <div class="settings-section">
+                <h3>⚙️ 시뮬레이션 기간</h3>
+                <div class="settings-grid">
                     <div class="input-group">
                         <label for="days">시뮬레이션 기간</label>
                         <div class="input-wrapper">
-                            <input type="number" id="days" value="30" min="1" max="365" step="1">
+                            <input type="number" id="days" value="100" min="1" max="365" step="1">
                             <span class="input-unit">일</span>
                         </div>
                     </div>
@@ -619,7 +627,7 @@
             </div>
 
             <div class="results-table-container">
-                <h3 style="color: var(--text-gray); margin-bottom: 1rem;">일별 상세 결과 (최근 10일)</h3>
+                <h3 style="color: var(--text-gray); margin-bottom: 1rem;">일별 상세 결과</h3>
                 <table id="resultsTable">
                     <thead>
                         <tr>

@@ -1,6 +1,13 @@
 // Websea Trading Simulator - JavaScript Version
 // 거래 시뮬레이션 및 에어드랍 계산
 
+// 스크롤 페이지네이션을 위한 전역 변수
+let allResults = [];
+let currentDisplayIndex = 0;
+const BATCH_SIZE = 50;
+let isLoading = false;
+let observer = null;
+
 // 에어드랍 금액표
 const AIRDROP_RATE_BY_ACTIVE_DAY = {
     1: 0.2067, 2: 0.2267, 3: 0.2467, 4: 0.2667, 5: 0.2867,
@@ -323,8 +330,99 @@ function runSimulation() {
     }, 100);
 }
 
+function createRowHTML(result) {
+    const netPnlClass = result.netPnl >= 0 ? 'positive' : 'negative';
+    const dailyPnlClass = result.dailyPnl >= 0 ? 'positive' : 'negative';
+
+    return `
+        <td>${result.day}</td>
+        <td>${formatNumber(result.capitalPlusClaim, 0)}</td>
+        <td>${formatNumber(result.startCapital, 0)}</td>
+        <td>${formatNumber(result.cumulativeClaim, 0)}</td>
+        <td>${formatNumber(result.seed, 2)}</td>
+        <td>${result.winCount}</td>
+        <td>${result.lossCount}</td>
+        <td class="positive">${formatNumber(result.totalProfit, 2)}</td>
+        <td class="negative">${formatNumber(result.totalLoss, 2)}</td>
+        <td class="${dailyPnlClass}">${formatNumber(result.dailyPnl, 2)}</td>
+        <td>${formatNumber(result.dailyFee, 2)}</td>
+        <td>${formatNumber(result.selfReferral, 2)}</td>
+        <td class="${netPnlClass}">${formatNumber(result.netPnl, 2)}</td>
+        <td>${formatNumber(result.endCapital, 0)}</td>
+        <td>${formatNumber(result.insuranceNodeCumulative, 2)}</td>
+        <td>${result.newNodesToday}</td>
+        <td>${formatNumber(result.carryoverLoss, 2)}</td>
+        <td>${result.waitingNodes}</td>
+        <td>${result.activeNodes}</td>
+        <td>${result.expiredNodes}</td>
+        <td>${result.newlyActivatedNodes}</td>
+        <td class="positive">${formatNumber(result.todayAirdropTotal, 2)}</td>
+        <td class="positive">${formatNumber(result.cumulativeAirdrop, 0)}</td>
+        <td>${formatNumber(result.totalCapital, 0)}</td>
+    `;
+}
+
+function loadMoreRows() {
+    if (isLoading || currentDisplayIndex >= allResults.length) return;
+
+    isLoading = true;
+    const tbody = document.getElementById('resultsBody');
+
+    // 기존 센티널 제거
+    const existingSentinel = document.getElementById('scroll-sentinel');
+    if (existingSentinel) {
+        existingSentinel.remove();
+    }
+
+    const endIndex = Math.min(currentDisplayIndex + BATCH_SIZE, allResults.length);
+
+    for (let i = currentDisplayIndex; i < endIndex; i++) {
+        const row = document.createElement('tr');
+        row.innerHTML = createRowHTML(allResults[i]);
+        tbody.appendChild(row);
+    }
+
+    currentDisplayIndex = endIndex;
+
+    // 더 로드할 데이터가 있으면 새 센티널 추가
+    if (currentDisplayIndex < allResults.length) {
+        const sentinel = document.createElement('tr');
+        sentinel.id = 'scroll-sentinel';
+        sentinel.style.height = '1px';
+        tbody.appendChild(sentinel);
+
+        // Observer 다시 연결
+        if (observer) {
+            observer.observe(sentinel);
+        }
+    }
+
+    isLoading = false;
+}
+
+function setupScrollPagination() {
+    // 기존 observer 정리
+    if (observer) {
+        observer.disconnect();
+    }
+
+    observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                loadMoreRows();
+            }
+        });
+    }, {
+        rootMargin: '100px'
+    });
+}
+
 function displayResults(results) {
     if (results.length === 0) return;
+
+    // 전역 변수에 결과 저장
+    allResults = results;
+    currentDisplayIndex = 0;
 
     const finalResult = results[results.length - 1];
     const initialCapital = results[0].startCapital;
@@ -344,47 +442,15 @@ function displayResults(results) {
     document.getElementById('activeNodes').innerHTML =
         finalResult.activeNodes + '<span class="unit">개</span>';
 
-    // 테이블 업데이트 (마지막 10일, 모든 컬럼)
+    // 테이블 초기화
     const tbody = document.getElementById('resultsBody');
     tbody.innerHTML = '';
 
-    const displayResults = results.slice(-10);
+    // Intersection Observer 설정
+    setupScrollPagination();
 
-    displayResults.forEach(result => {
-        const row = document.createElement('tr');
-
-        const netPnlClass = result.netPnl >= 0 ? 'positive' : 'negative';
-        const dailyPnlClass = result.dailyPnl >= 0 ? 'positive' : 'negative';
-
-        row.innerHTML = `
-            <td>${result.day}</td>
-            <td>${formatNumber(result.capitalPlusClaim, 0)}</td>
-            <td>${formatNumber(result.startCapital, 0)}</td>
-            <td>${formatNumber(result.cumulativeClaim, 0)}</td>
-            <td>${formatNumber(result.seed, 2)}</td>
-            <td>${result.winCount}</td>
-            <td>${result.lossCount}</td>
-            <td class="positive">${formatNumber(result.totalProfit, 2)}</td>
-            <td class="negative">${formatNumber(result.totalLoss, 2)}</td>
-            <td class="${dailyPnlClass}">${formatNumber(result.dailyPnl, 2)}</td>
-            <td>${formatNumber(result.dailyFee, 2)}</td>
-            <td>${formatNumber(result.selfReferral, 2)}</td>
-            <td class="${netPnlClass}">${formatNumber(result.netPnl, 2)}</td>
-            <td>${formatNumber(result.endCapital, 0)}</td>
-            <td>${formatNumber(result.insuranceNodeCumulative, 2)}</td>
-            <td>${result.newNodesToday}</td>
-            <td>${formatNumber(result.carryoverLoss, 2)}</td>
-            <td>${result.waitingNodes}</td>
-            <td>${result.activeNodes}</td>
-            <td>${result.expiredNodes}</td>
-            <td>${result.newlyActivatedNodes}</td>
-            <td class="positive">${formatNumber(result.todayAirdropTotal, 2)}</td>
-            <td class="positive">${formatNumber(result.cumulativeAirdrop, 0)}</td>
-            <td>${formatNumber(result.totalCapital, 0)}</td>
-        `;
-
-        tbody.appendChild(row);
-    });
+    // 첫 배치 로드
+    loadMoreRows();
 }
 
 // 페이지 로드 및 이벤트 리스너 설정
