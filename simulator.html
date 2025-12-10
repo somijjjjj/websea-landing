@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Websea 거래 시뮬레이터 - Trading Simulation Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #1a1d29;
+            --primary-darker: #0f1117;
+            --accent-green: #a4ff3d;
+            --accent-green-dark: #8fde35;
+            --accent-green-light: #c5ff7a;
+            --text-light: #ffffff;
+            --text-gray: #a0a3b5;
+            --gradient-1: linear-gradient(135deg, #a4ff3d 0%, #8fde35 100%);
+            --gradient-2: linear-gradient(135deg, #c5ff7a 0%, #a4ff3d 50%, #8fde35 100%);
+            --shadow-glow: 0 0 40px rgba(164, 255, 61, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--primary-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at top, #1a1d29 0%, #0f1117 50%);
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(164, 255, 61, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(164, 255, 61, 0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(5deg); }
+            66% { transform: translate(-20px, 20px) rotate(-5deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(15, 17, 23, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(164, 255, 61, 0.1);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 100px auto 50px;
+            padding: 0 5%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(164, 255, 61, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            color: var(--accent-green);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .input-group input {
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(164, 255, 61, 0.2);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(164, 255, 61, 0.1);
+        }
+
+        .cta-button {
+            background: var(--gradient-1);
+            color: var(--primary-darker);
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-glow);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 60px rgba(164, 255, 61, 0.4);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        /* Results Panel */
+        .results-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(164, 255, 61, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .results-panel.active {
+            display: block;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: rgba(164, 255, 61, 0.05);
+            border: 1px solid rgba(164, 255, 61, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card .value {
+            color: var(--accent-green);
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .summary-card .unit {
+            color: var(--text-gray);
+            font-size: 1rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Results Table */
+        .results-table-container {
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        thead {
+            background: rgba(164, 255, 61, 0.1);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            color: var(--accent-green);
+            font-weight: 600;
+            border-bottom: 2px solid rgba(164, 255, 61, 0.3);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover {
+            background: rgba(164, 255, 61, 0.03);
+        }
+
+        .positive {
+            color: var(--accent-green);
+        }
+
+        .negative {
+            color: #ff4d4d;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(164, 255, 61, 0.1);
+            border-top: 4px solid var(--accent-green);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <nav>
+        <div class="logo" onclick="window.location.href='index.html'">WEBSEA</div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>거래 시뮬레이터</h1>
+            <p>초기 자본, 승률, 레버리지를 설정하여 거래 성과를 시뮬레이션 하세요</p>
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="settings-panel">
+            <h2 style="color: var(--accent-green); margin-bottom: 2rem;">⚙️ 거래 설정</h2>
+
+            <div class="settings-grid">
+                <div class="input-group">
+                    <label for="initialInvestment">초기 투자금 (USDT)</label>
+                    <input type="number" id="initialInvestment" value="10000" min="100" step="100">
+                </div>
+
+                <div class="input-group">
+                    <label for="leverage">레버리지</label>
+                    <input type="number" id="leverage" value="25" min="1" max="125" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="winCount">승리 횟수 (1일)</label>
+                    <input type="number" id="winCount" value="75" min="0" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="lossCount">패배 횟수 (1일)</label>
+                    <input type="number" id="lossCount" value="30" min="0" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="days">시뮬레이션 기간 (일)</label>
+                    <input type="number" id="days" value="30" min="1" max="365" step="1">
+                </div>
+            </div>
+
+            <button class="cta-button" onclick="runSimulation()">
+                시뮬레이션 실행
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>시뮬레이션 실행 중...</p>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="results-panel" id="resultsPanel">
+            <h2 style="color: var(--accent-green); margin-bottom: 2rem;">📊 시뮬레이션 결과</h2>
+
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>최종 총 자본</h3>
+                    <div class="value" id="finalCapital">-<span class="unit">USDT</span></div>
+                </div>
+
+                <div class="summary-card">
+                    <h3>순손익</h3>
+                    <div class="value" id="netProfit">-<span class="unit">USDT</span></div>
+                </div>
+
+                <div class="summary-card">
+                    <h3>누적 에어드랍</h3>
+                    <div class="value" id="totalAirdrop">-<span class="unit">USDT</span></div>
+                </div>
+
+                <div class="summary-card">
+                    <h3>활성 노드</h3>
+                    <div class="value" id="activeNodes">-<span class="unit">개</span></div>
+                </div>
+            </div>
+
+            <div class="results-table-container">
+                <h3 style="color: var(--text-gray); margin-bottom: 1rem;">일별 상세 결과 (최근 10일)</h3>
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>일차</th>
+                            <th>시작 자본</th>
+                            <th>종료 자본</th>
+                            <th>일일 손익</th>
+                            <th>순손익</th>
+                            <th>누적 에어드랍</th>
+                            <th>활성 노드</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="simulator.js"></script>
+</body>
+</html>
