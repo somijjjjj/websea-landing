@@ -222,6 +222,23 @@ function formatNumber(num, decimals = 2) {
     return num.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function updateCalculatedFields() {
+    // 초기 투자금 기반 계산
+    const initialInvestment = parseFloat(document.getElementById('initialInvestment').value) || 0;
+    const insuranceReserve = initialInvestment * 0.1;
+    const futuresSeed = initialInvestment * 0.9;
+
+    document.getElementById('insuranceReserve').value = formatNumber(insuranceReserve, 0);
+    document.getElementById('futuresSeed').value = formatNumber(futuresSeed, 0);
+
+    // 1일 거래 횟수 = 승리 횟수 + 패배 횟수
+    const winCount = parseInt(document.getElementById('winCount').value) || 0;
+    const lossCount = parseInt(document.getElementById('lossCount').value) || 0;
+    const dailyTrades = winCount + lossCount;
+
+    document.getElementById('dailyTrades').value = dailyTrades;
+}
+
 function runSimulation() {
     // 입력값 가져오기
     const initialInvestment = parseFloat(document.getElementById('initialInvestment').value);
@@ -229,6 +246,13 @@ function runSimulation() {
     const winCount = parseInt(document.getElementById('winCount').value);
     const lossCount = parseInt(document.getElementById('lossCount').value);
     const days = parseInt(document.getElementById('days').value);
+
+    // 새로운 설정값들
+    const selfReferralRate = parseFloat(document.getElementById('selfReferralRate').value) / 100;
+    const seedRate = parseFloat(document.getElementById('seedRate').value) / 100;
+    const winProfitRate = parseFloat(document.getElementById('winProfitRate').value) / 100;
+    const lossRate = parseFloat(document.getElementById('lossRate').value) / 100;
+    const airdropPerDay = parseInt(document.getElementById('airdropPerDay').value);
 
     // 유효성 검사
     if (isNaN(initialInvestment) || initialInvestment < 100) {
@@ -258,6 +282,14 @@ function runSimulation() {
             winCount,
             lossCount
         });
+
+        // 커스텀 설정 적용
+        settings.selfReferralRate = selfReferralRate;
+        settings.seedRate = seedRate;
+        settings.winProfitRate = winProfitRate;
+        settings.lossRate = lossRate;
+        settings.airdropPerDay = airdropPerDay;
+        settings.dailyTrades = winCount + lossCount;
 
         const simulator = new TradingSimulator(settings, days);
         const results = simulator.runSimulation();
@@ -320,9 +352,20 @@ function displayResults(results) {
     });
 }
 
-// 엔터키로 시뮬레이션 실행
+// 페이지 로드 및 이벤트 리스너 설정
 document.addEventListener('DOMContentLoaded', function() {
-    const inputs = document.querySelectorAll('input');
+    // 초기 계산값 업데이트
+    updateCalculatedFields();
+
+    // 초기 투자금 변경 시
+    document.getElementById('initialInvestment').addEventListener('input', updateCalculatedFields);
+
+    // 승리/패배 횟수 변경 시
+    document.getElementById('winCount').addEventListener('input', updateCalculatedFields);
+    document.getElementById('lossCount').addEventListener('input', updateCalculatedFields);
+
+    // 엔터키로 시뮬레이션 실행
+    const inputs = document.querySelectorAll('input:not([readonly])');
     inputs.forEach(input => {
         input.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
