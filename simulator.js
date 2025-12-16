@@ -382,7 +382,7 @@ function createRowHTML(result) {
         <td>${result.expiredNodes}</td>
         <td>${result.newlyActivatedNodes}</td>
         <td class="positive">${formatNumber(result.todayAirdropTotal, 2)}</td>
-        <td class="positive">${formatNumber(result.cumulativeAirdrop, 0)}</td>
+        <td class="positive">${formatNumber(result.cumulativeAirdrop, 2)}</td>
         <td>${formatNumber(result.totalCapital, 0)}</td>
     `;
 }
@@ -462,7 +462,7 @@ function displayResults(results) {
     profitElement.className = 'value ' + (netProfit >= 0 ? 'positive' : 'negative');
 
     document.getElementById('totalAirdrop').innerHTML =
-        formatNumber(finalResult.cumulativeAirdrop, 0) + '<span class="unit">USDT</span>';
+        formatNumber(finalResult.cumulativeAirdrop, 2) + '<span class="unit">USDT</span>';
 
     document.getElementById('activeNodes').innerHTML =
         finalResult.activeNodes + '<span class="unit">개</span>';
