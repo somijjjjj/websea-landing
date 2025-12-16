@@ -188,6 +188,16 @@
             box-shadow: 0 0 0 3px rgba(164, 255, 61, 0.1);
         }
 
+        .input-row {
+            grid-column: 1 / -1;
+        }
+
+        .triple-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
         .input-group input:read-only,
         .input-group input:disabled {
             background: rgba(255, 255, 255, 0.02);
@@ -419,14 +429,6 @@
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <label for="leverage">레버리지</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="leverage" value="25" min="1" max="125" step="1">
-                            <span class="input-unit">배</span>
-                        </div>
-                    </div>
-
                     <div class="input-group readonly">
                         <label for="baseFeeRate">지정가 기본 수수료율</label>
                         <div class="input-wrapper">
@@ -454,32 +456,34 @@
                     <div class="input-group">
                         <label for="selfReferralRate">셀프 레퍼럴 비율</label>
                         <div class="input-wrapper">
-                            <input type="number" id="selfReferralRate" value="40" min="0" max="100" step="1">
+                            <input type="number" id="selfReferralRate" value="20" min="0" max="100" step="1">
                             <span class="input-unit">%</span>
                         </div>
                     </div>
 
-                    <div class="input-group calculated">
-                        <label for="dailyTrades">1일 거래 횟수</label>
-                        <div class="input-wrapper">
-                            <input type="text" id="dailyTrades" value="105" readonly>
-                            <span class="input-unit">회</span>
+                    <div class="input-row triple-grid">
+                        <div class="input-group calculated">
+                            <label for="dailyTrades">1일 거래 횟수</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="dailyTrades" value="105" readonly>
+                                <span class="input-unit">회</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="input-group">
-                        <label for="winCount">승리 횟수</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="winCount" value="75" min="0" step="1">
-                            <span class="input-unit">회</span>
+                        <div class="input-group">
+                            <label for="winCount">승리 횟수</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="winCount" value="75" min="0" step="1">
+                                <span class="input-unit">회</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="input-group">
-                        <label for="lossCount">패배 횟수</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="lossCount" value="30" min="0" step="1">
-                            <span class="input-unit">회</span>
+                        <div class="input-group">
+                            <label for="lossCount">패배 횟수</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="lossCount" value="30" min="0" step="1">
+                                <span class="input-unit">회</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -492,9 +496,17 @@
                 <h3>⚙️ 봇 설정</h3>
                 <div class="settings-grid">
                     <div class="input-group">
+                        <label for="leverage">레버리지</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="leverage" value="25" min="1" max="100" step="1">
+                            <span class="input-unit">배</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
                         <label for="seedRate">시드 비율</label>
                         <div class="input-wrapper">
-                            <input type="number" id="seedRate" value="1" min="0.1" max="10" step="0.1">
+                            <input type="number" id="seedRate" value="1" min="1" max="100" step="1">
                             <span class="input-unit">%</span>
                         </div>
                     </div>
@@ -502,7 +514,7 @@
                     <div class="input-group">
                         <label for="winProfitRate">익절률</label>
                         <div class="input-wrapper">
-                            <input type="number" id="winProfitRate" value="5" min="0.1" max="100" step="0.1">
+                            <input type="number" id="winProfitRate" value="5" min="1" max="100" step="1">
                             <span class="input-unit">%</span>
                         </div>
                     </div>
@@ -510,8 +522,8 @@
                     <div class="input-group">
                         <label for="lossRate">손절률</label>
                         <div class="input-wrapper">
-                            <input type="number" id="lossRate" value="10" min="0.1" max="100" step="0.1">
-                            <span class="input-unit">%</span>
+                            <input type="number" id="lossRate" value="10" min="1" max="100" step="1">
+                            <span class="input-unit">-%</span>
                         </div>
                     </div>
                 </div>

@@ -33,7 +33,7 @@ class TradingSettings {
         // 고정값
         this.bootingRate = 0.10;
         this.tradeFeeRate = 0.03;
-        this.selfReferralRate = 0.40;
+        this.selfReferralRate = 0.20;
         this.dailyTrades = 105;
 
         // 봇 설정
@@ -272,15 +272,25 @@ function runSimulation() {
     const days = parseInt(document.getElementById('days').value);
 
     // 새로운 설정값들
-    const selfReferralRate = parseFloat(document.getElementById('selfReferralRate').value) / 100;
-    const seedRate = parseFloat(document.getElementById('seedRate').value) / 100;
-    const winProfitRate = parseFloat(document.getElementById('winProfitRate').value) / 100;
-    const lossRate = parseFloat(document.getElementById('lossRate').value) / 100;
+    const selfReferralRateInput = parseFloat(document.getElementById('selfReferralRate').value);
+    const seedRateInput = parseFloat(document.getElementById('seedRate').value);
+    const winProfitRateInput = parseFloat(document.getElementById('winProfitRate').value);
+    const lossRateInput = parseFloat(document.getElementById('lossRate').value);
     const airdropPerDay = parseInt(document.getElementById('airdropPerDay').value);
+
+    const selfReferralRate = selfReferralRateInput / 100;
+    const seedRate = seedRateInput / 100;
+    const winProfitRate = winProfitRateInput / 100;
+    const lossRate = lossRateInput / 100;
 
     // 유효성 검사
     if (isNaN(initialInvestment) || initialInvestment < 100) {
         alert('초기 투자금은 100 USDT 이상이어야 합니다.');
+        return;
+    }
+
+    if (isNaN(leverage) || leverage < 1 || leverage > 100) {
+        alert('레버리지는 1-100 범위로 입력해 주세요.');
         return;
     }
 
@@ -291,6 +301,21 @@ function runSimulation() {
 
     if (isNaN(days) || days < 1 || days > 365) {
         alert('시뮬레이션 기간은 1-365일 사이여야 합니다.');
+        return;
+    }
+
+    if (isNaN(seedRateInput) || seedRateInput < 1 || seedRateInput > 100) {
+        alert('시드 비율은 1-100% 범위로 입력해 주세요.');
+        return;
+    }
+
+    if (isNaN(winProfitRateInput) || winProfitRateInput < 1 || winProfitRateInput > 100) {
+        alert('익절률은 1-100% 범위로 입력해 주세요.');
+        return;
+    }
+
+    if (isNaN(lossRateInput) || lossRateInput < 1 || lossRateInput > 100) {
+        alert('손절률은 1-100% 범위로 입력해 주세요.');
         return;
     }
 
