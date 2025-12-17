@@ -275,7 +275,8 @@ function runSimulation() {
     const selfReferralRateInput = parseFloat(document.getElementById('selfReferralRate').value);
     const seedRateInput = parseFloat(document.getElementById('seedRate').value);
     const winProfitRateInput = parseFloat(document.getElementById('winProfitRate').value);
-    const lossRateInput = parseFloat(document.getElementById('lossRate').value);
+    const rawLossRateInput = parseFloat(document.getElementById('lossRate').value);
+    const lossRateInput = Math.abs(rawLossRateInput);
     const airdropPerDay = parseInt(document.getElementById('airdropPerDay').value);
 
     const selfReferralRate = selfReferralRateInput / 100;
@@ -315,7 +316,7 @@ function runSimulation() {
     }
 
     if (isNaN(lossRateInput) || lossRateInput < 1 || lossRateInput > 100) {
-        alert('손절률은 1-100% 범위로 입력해 주세요.');
+        alert('손절률은 -100%에서 -1% 범위로 입력해 주세요.');
         return;
     }
 
@@ -360,30 +361,7 @@ function createRowHTML(result) {
     const dailyPnlClass = result.dailyPnl >= 0 ? 'positive' : 'negative';
 
     return `
-        <td class="sticky-col-1">${result.day}</td>
-        <td class="sticky-col-2">${formatNumber(result.totalCapital, 0)}</td>
-        <td class="sticky-col-3">${formatNumber(result.capitalPlusClaim, 0)}</td>
-        <td>${formatNumber(result.startCapital, 0)}</td>
-        <td>${formatNumber(result.seed, 2)}</td>
-        <td>${result.winCount}</td>
-        <td>${result.lossCount}</td>
-        <td class="positive">${formatNumber(result.totalProfit, 2)}</td>
-        <td class="negative">${formatNumber(result.totalLoss, 2)}</td>
-        <td class="${dailyPnlClass}">${formatNumber(result.dailyPnl, 2)}</td>
-        <td>${formatNumber(result.dailyFee, 2)}</td>
-        <td>${formatNumber(result.selfReferral, 2)}</td>
-        <td class="${netPnlClass}">${formatNumber(result.netPnl, 2)}</td>
-        <td>${formatNumber(result.endCapital, 0)}</td>
-        <td>${formatNumber(result.insuranceNodeCumulative, 2)}</td>
-        <td>${result.newNodesToday}</td>
-        <td>${formatNumber(result.carryoverLoss, 2)}</td>
-        <td>${result.waitingNodes}</td>
-        <td class="text-accent">${result.activeNodes}</td>
-        <td>${result.expiredNodes}</td>
-        <td>${result.newlyActivatedNodes}</td>
-        <td class="text-white">${formatNumber(result.todayAirdropTotal, 2)}</td>
-        <td class="positive">${formatNumber(result.cumulativeAirdrop, 2)}</td>
-    `;
+        <!-- Day -->\n        <td class=\"sticky-col-1\">${result.day}</td>\n        <!-- Total capital (end + airdrop) -->\n        <td class=\"sticky-col-2\">${formatNumber(result.totalCapital, 0)}</td>\n        <!-- Capital + claim pool -->\n        <td class=\"sticky-col-3\">${formatNumber(result.capitalPlusClaim, 0)}</td>\n        <!-- Start capital -->\n        <td>${formatNumber(result.startCapital, 0)}</td>\n        <!-- Seed size -->\n        <td>${formatNumber(result.seed, 2)}</td>\n        <!-- Wins -->\n        <td>${result.winCount}</td>\n        <!-- Losses -->\n        <td>${result.lossCount}</td>\n        <!-- Total profit -->\n        <td class=\"positive\">${formatNumber(result.totalProfit, 2)}</td>\n        <!-- Total loss -->\n        <td class=\"negative\">${formatNumber(result.totalLoss, 2)}</td>\n        <!-- Daily PnL -->\n        <td class=\"${dailyPnlClass}\">${formatNumber(result.dailyPnl, 2)}</td>\n        <!-- Daily fee -->\n        <td>${formatNumber(result.dailyFee, 2)}</td>\n        <!-- Self referral -->\n        <td>${formatNumber(result.selfReferral, 2)}</td>\n        <!-- Net P/L -->\n        <td class=\"${netPnlClass}\">${formatNumber(result.netPnl, 2)}</td>\n        <!-- End capital -->\n        <td>${formatNumber(result.endCapital, 0)}</td>\n        <!-- Insurance node cumulative -->\n        <td>${formatNumber(result.insuranceNodeCumulative, 2)}</td>\n        <!-- New nodes today -->\n        <td>${result.newNodesToday}</td>\n        <!-- Carryover loss -->\n        <td>${formatNumber(result.carryoverLoss, 2)}</td>\n        <!-- Waiting nodes -->\n        <td>${result.waitingNodes}</td>\n        <!-- Active nodes -->\n        <td class=\"text-accent\">${result.activeNodes}</td>\n        <!-- Expired nodes -->\n        <td>${result.expiredNodes}</td>\n        <!-- Newly activated nodes -->\n        <td>${result.newlyActivatedNodes}</td>\n        <!-- Today airdrop -->\n        <td class=\"text-white\">${formatNumber(result.todayAirdropTotal, 2)}</td>\n        <!-- Cumulative airdrop -->\n        <td class=\"positive\">${formatNumber(result.cumulativeAirdrop, 2)}</td>\n    `;
 }
 
 function loadMoreRows() {
@@ -461,7 +439,7 @@ function displayResults(results) {
     profitElement.className = 'value ' + (netProfit >= 0 ? 'positive' : 'negative');
 
     document.getElementById('totalAirdrop').innerHTML =
-        formatNumber(finalResult.cumulativeAirdrop, 2) + '<span class="unit">USDT</span>';
+        formatNumber(finalResult.cumulativeAirdrop, 0) + '<span class="unit">USDT</span>';
 
     const activeNodesElement = document.getElementById('activeNodes');
     activeNodesElement.innerHTML =

@@ -19,6 +19,9 @@
             --gradient-1: linear-gradient(135deg, #a4ff3d 0%, #8fde35 100%);
             --gradient-2: linear-gradient(135deg, #c5ff7a 0%, #a4ff3d 50%, #8fde35 100%);
             --shadow-glow: 0 0 40px rgba(164, 255, 61, 0.3);
+            --sticky-col-1-width: 90px;
+            --sticky-col-2-width: 150px;
+            --sticky-col-3-width: 170px;
         }
 
         * {
@@ -356,14 +359,18 @@
             position: sticky;
             left: 0;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--primary-darker);
+            min-width: var(--sticky-col-1-width);
+            box-shadow: 6px 0 10px rgba(0, 0, 0, 0.35);
         }
 
         .sticky-col-2 {
             position: sticky;
-            left: 110px;
+            left: var(--sticky-col-1-width);
             z-index: 2;
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--primary-darker);
+            min-width: var(--sticky-col-2-width);
+            box-shadow: 6px 0 10px rgba(0, 0, 0, 0.35);
         }
 
         th.sticky-col-1,
@@ -373,9 +380,11 @@
 
         .sticky-col-3 {
             position: sticky;
-            left: 220px;
+            left: calc(var(--sticky-col-1-width) + var(--sticky-col-2-width));
             z-index: 2;
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--primary-darker);
+            min-width: var(--sticky-col-3-width);
+            box-shadow: 6px 0 10px rgba(0, 0, 0, 0.35);
         }
 
         th.sticky-col-3 {
@@ -561,7 +570,7 @@
                     <div class="input-group">
                         <label for="lossRate">손절률</label>
                         <div class="input-wrapper">
-                            -<input type="number" id="lossRate" value="10" min="1" max="100" step="1">
+                            <input type="number" id="lossRate" value="-10" min="-100" max="-1" step="1">
                             <span class="input-unit">%</span>
                         </div>
                     </div>
