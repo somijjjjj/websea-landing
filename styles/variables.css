@@ -1,0 +1,56 @@
+:root {
+  /* Primary Colors */
+  --primary-dark: #1a1d29;
+  --primary-darker: #0f1117;
+
+  /* Accent Colors */
+  --accent-green: #a4ff3d;
+  --accent-green-dark: #8fde35;
+  --accent-green-light: #c5ff7a;
+
+  /* Text Colors */
+  --text-light: #ffffff;
+  --text-gray: #a0a3b5;
+
+  /* System Colors */
+  --color-danger: #ff6b6b;
+  --color-loss: #ff4d4d;
+
+  /* Gradients */
+  --gradient-1: linear-gradient(135deg, #a4ff3d 0%, #8fde35 100%);
+  --gradient-2: linear-gradient(135deg, #c5ff7a 0%, #a4ff3d 50%, #8fde35 100%);
+
+  /* Shadows */
+  --shadow-glow: 0 0 40px rgba(164, 255, 61, 0.3);
+  --shadow-elevation: 0 10px 30px rgba(164, 255, 61, 0.3);
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+  --spacing-3xl: 6rem;
+  --spacing-4xl: 8rem;
+
+  /* Typography */
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Noto Sans KR', sans-serif;
+
+  /* Border Radius */
+  --radius-sm: 10px;
+  --radius-md: 15px;
+  --radius-lg: 20px;
+  --radius-full: 50px;
+
+  /* Transitions */
+  --transition-quick: 0.3s ease;
+  --transition-medium: 0.4s ease;
+  --transition-normal: 1s ease-out;
+
+  /* Table Sticky Columns */
+  --sticky-col-1-width: 90px;
+  --sticky-col-2-width: 150px;
+  --sticky-col-3-width: 170px;
+}

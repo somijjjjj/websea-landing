@@ -157,16 +157,11 @@ class TradingSimulator {
         result.newNodesToday = Math.floor(poolBalanceBeforeNodeCreation / this.settings.nodeCost);
         result.insurancePoolBalance = poolBalanceBeforeNodeCreation % this.settings.nodeCost;
 
-        // R: 대기 노드 수
-        if (day === 1) {
-            result.waitingNodes = result.newNodesToday;
-        } else {
-            const startIdx = Math.max(0, day - this.settings.nodeActivationDelay - 1);
-            result.waitingNodes = this.results.slice(startIdx, day).reduce((sum, r) => sum + r.newNodesToday, 0);
-            if (day >= this.settings.nodeActivationDelay + 1) {
-                result.waitingNodes -= this.results[day - this.settings.nodeActivationDelay - 1].newNodesToday;
-            }
-        }
+        // R: 대기 노드 수 (생성 후 nodeActivationDelay일 뒤 활성화)
+        // 예) delay=3: 1일차 생성분은 4일차부터 활성(따라서 4일차 대기에는 1일차 생성분이 포함되지 않음)
+        const waitingStartIdx = Math.max(0, day - this.settings.nodeActivationDelay);
+        result.waitingNodes =
+            this.results.slice(waitingStartIdx).reduce((sum, r) => sum + r.newNodesToday, 0) + result.newNodesToday;
 
         // T: 만료된 노드 수
         if (day <= this.settings.nodeExpiryDays) {

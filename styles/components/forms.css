@@ -1,0 +1,65 @@
+/* Form Elements */
+
+/* Input Groups */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  color: var(--accent-green);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.input-group.calculated label,
+.input-group.readonly label {
+  color: var(--text-gray);
+}
+
+/* Input Wrapper */
+.input-wrapper {
+  position: relative;
+}
+
+/* Input Fields */
+input[type="number"],
+input[type="text"],
+select {
+  padding: 0.8rem 3.5rem 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(164, 255, 61, 0.2);
+  border-radius: var(--radius-sm);
+  color: var(--text-light);
+  font-size: 1rem;
+  font-family: var(--font-body);
+  width: 100%;
+  transition: all var(--transition-quick);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent-green);
+  box-shadow: 0 0 0 3px rgba(164, 255, 61, 0.1);
+}
+
+input:disabled,
+input:read-only {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(164, 255, 61, 0.1);
+  color: var(--text-gray);
+  cursor: not-allowed;
+}
+
+/* Input Unit */
+.input-unit {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-gray);
+  font-size: 0.9rem;
+  pointer-events: none;
+}

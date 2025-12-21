@@ -264,21 +264,10 @@ class TradingSimulator:
         # =MOD( $O3 , '기본 설정값'!$B$21 )
         carryover_loss = insurance_node_cumulative % self.settings.node_cost
 
-        # R: 대기 노드 수
-        # 첫 행: =P3
-        # 그 다음: =SUM(INDEX($P:$P, ROW()-3):INDEX($P:$P, ROW())) - INDEX($P:$P, ROW()-3)
-        if day == 1:
-            waiting_nodes = new_nodes_today
-        else:
-            # 4일간의 합계에서 4일 전 값을 뺀 것 = 최근 3일간의 합
-            # ROW()가 현재 행 번호라고 가정 (day + 2, 1일차는 3행)
-            # 간단히: 최근 3일(현재 포함)의 P 합계에서 3일 전 P를 뺀 값
-            # = P[day-2] + P[day-1] + P[day] - P[day-3] (if day >= 4)
-            # 아니면 그냥 최근 self.settings.node_activation_delay일의 P 합계
-            start_idx = max(0, day - self.settings.node_activation_delay)
-            waiting_nodes = sum(r.new_nodes_today for r in self.results[start_idx:day-1]) + new_nodes_today
-            if day >= self.settings.node_activation_delay + 1:
-                waiting_nodes -= self.results[day - self.settings.node_activation_delay - 1].new_nodes_today
+        # R: 대기 노드 수 (생성 후 node_activation_delay일 뒤 활성화)
+        # 예) delay=3: 1일차 생성분은 4일차부터 활성(따라서 4일차 대기에는 1일차 생성분이 포함되지 않음)
+        start_idx = max(0, day - self.settings.node_activation_delay)
+        waiting_nodes = sum(r.new_nodes_today for r in self.results[start_idx:]) + new_nodes_today
 
         # T: 만료된 노드 수
         # =IF($A3 <= '기본 설정값'!$B$26, 0, INDEX($P$3:$P$986, $A3 - '기본 설정값'!$B$26))

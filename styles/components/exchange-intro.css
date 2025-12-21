@@ -1,0 +1,132 @@
+/* Exchange Intro Section */
+.exchange-intro {
+  padding: 6rem 5%;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 29, 41, 0.3) 0%,
+    transparent 50%,
+    rgba(26, 29, 41, 0.3) 100%
+  );
+}
+
+.exchange-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.exchange-description {
+  font-size: 1.3rem;
+  color: var(--text-gray);
+  line-height: 2;
+  margin-bottom: 4rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.exchange-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.exchange-feature-item {
+  background: linear-gradient(
+    135deg,
+    rgba(26, 29, 41, 0.5) 0%,
+    rgba(15, 17, 23, 0.7) 100%
+  );
+  border: 1px solid rgba(164, 255, 61, 0.15);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  transition: all var(--transition-medium);
+  animation: fadeInUp 1s ease-out both;
+}
+
+.exchange-feature-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.exchange-feature-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.exchange-feature-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.exchange-feature-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.exchange-feature-item:hover {
+  transform: translateY(-10px);
+  border-color: var(--accent-green);
+  box-shadow: 0 20px 50px rgba(164, 255, 61, 0.2);
+}
+
+.exchange-feature-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  animation: float-icon 3s ease-in-out infinite;
+}
+
+.exchange-feature-item h3 {
+  font-size: 1.5rem;
+  color: var(--accent-green);
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+}
+
+.exchange-feature-item p {
+  color: var(--text-gray);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.exchange-cta {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .exchange-intro {
+    padding: 4rem 5%;
+  }
+
+  .exchange-description {
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+  }
+
+  .exchange-features {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .exchange-feature-item {
+    padding: 2rem 1.5rem;
+  }
+
+  .exchange-feature-icon {
+    font-size: 3rem;
+  }
+
+  .exchange-feature-item h3 {
+    font-size: 1.3rem;
+  }
+
+  .exchange-cta {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .exchange-cta .btn {
+    width: 100%;
+  }
+}

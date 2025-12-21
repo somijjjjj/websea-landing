@@ -1,0 +1,18 @@
+/* Main CSS - Import all component styles */
+
+/* Base */
+@import './reset.css';
+@import './variables.css';
+@import './animations.css';
+
+/* Components */
+@import './components/background.css';
+@import './components/navigation.css';
+@import './components/buttons.css';
+@import './components/cards.css';
+@import './components/forms.css';
+@import './components/tables.css';
+@import './components/sections.css';
+@import './components/exchange-intro.css';
+@import './components/risk.css';
+@import './components/simulator.css';

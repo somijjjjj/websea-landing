@@ -1,0 +1,24 @@
+/* Animated Background */
+.bg-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: radial-gradient(ellipse at top, #1a1d29 0%, #0f1117 50%);
+  overflow: hidden;
+}
+
+.bg-animation::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(164, 255, 61, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(164, 255, 61, 0.05) 0%, transparent 50%);
+  animation: float 20s ease-in-out infinite;
+}
